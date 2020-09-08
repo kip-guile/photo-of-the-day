@@ -37,7 +37,7 @@ export const FrameContainer = styled.div`
 
 export const InnerFrameContainer = styled.div`
   display: flex;
-  height: 60rem;
+  height: 100%;
   width: 50%;
   padding: 2rem;
   justify-content: center;
@@ -80,4 +80,11 @@ export const Button = styled.button`
   height: 2rem;
   border-radius: 3px;
   background-color: gray;
+`
+
+export const Favs = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `

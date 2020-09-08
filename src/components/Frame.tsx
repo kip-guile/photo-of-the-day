@@ -12,9 +12,16 @@ interface FrameProps {
   change(by: number): any
   setDisplayFav(val: boolean): any
   mediaType: string
+  disableNext: boolean
 }
 
-const Frame = ({ imgurl, change, setDisplayFav, mediaType }: FrameProps) => {
+const Frame = ({
+  imgurl,
+  change,
+  setDisplayFav,
+  mediaType,
+  disableNext,
+}: FrameProps) => {
   const handleClick = (val: number) => {
     change(val)
     setDisplayFav(false)
@@ -31,7 +38,9 @@ const Frame = ({ imgurl, change, setDisplayFav, mediaType }: FrameProps) => {
           <Image src={imgurl} alt='photo-of-the-day' />
         </InnerFrameContainer>
       )}
-      <Button onClick={() => handleClick(1)}>next day</Button>
+      <Button disabled={disableNext} onClick={() => handleClick(1)}>
+        next day
+      </Button>
     </FrameContainer>
   )
 }

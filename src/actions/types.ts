@@ -3,4 +3,8 @@ export enum ActionTypes {
   addFav,
   deleteFav,
   getFavs,
+  addDeleteError,
+  addNasaError,
+  addGetError,
+  addError,
 }
