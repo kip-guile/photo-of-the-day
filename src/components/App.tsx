@@ -3,6 +3,11 @@ import { connect } from 'react-redux'
 import { fetchPhotoObject, PhotoObject } from '../actions'
 import { StoreState } from '../reducers'
 import { DatePicker } from './DatePicker'
+import Frame from './Frame'
+import Content from './Content'
+import Header from './Header'
+import { AppContainer } from '../styles/styles'
+// import moment from 'moment'
 
 interface AppProps {
   photo: PhotoObject
@@ -15,12 +20,20 @@ function App({ photo, fetchPhotoObject }: AppProps) {
   useEffect(() => {
     fetchPhotoObject(curDate)
   }, [fetchPhotoObject, curDate])
-  console.log(photo)
+  // let momd = moment()
+  // const change = (diff: number) => {
+  //   momd.add(diff, 'days')
+  //   console.log(momd.format().substr(0, 10))
+  // }
+  // change(-10)
+
   return (
-    <div>
-      {photo.title}
+    <AppContainer>
+      <Header title={photo.title} />
+      <Frame imgurl={photo.hdurl} />
+      <Content explanation={photo.explanation} />
       <DatePicker date={curDate} setDate={setCurDate} today={today} />
-    </div>
+    </AppContainer>
   )
 }
 

@@ -23,7 +23,7 @@ export interface fetchPhotoAction {
 export const fetchPhotoObject = (date: string) => {
   return async (dispatch: Dispatch) => {
     const response = await axios.get<PhotoObject>(
-      `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${date}`
+      `https://api.nasa.gov/planetary/apod?api_key=${key}&hd=false&date=${date}`
     )
     dispatch<fetchPhotoAction>({
       type: ActionTypes.fetchPhoto,
