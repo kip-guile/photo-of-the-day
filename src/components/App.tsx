@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import './App.css'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import {
@@ -7,6 +8,7 @@ import {
   addFavObject,
   FavObject,
   deleteFav,
+  getFavsFromDb,
 } from '../actions'
 import { StoreState } from '../reducers'
 import { DatePicker } from './DatePicker'
@@ -21,6 +23,7 @@ interface AppProps {
   fetchPhotoObject(date: string): any
   addFavObject(fav: FavObject): any
   deleteFav(date: string): any
+  getFavsFromDb(): any
 }
 
 function App({
@@ -29,6 +32,7 @@ function App({
   fetchPhotoObject,
   addFavObject,
   deleteFav,
+  getFavsFromDb,
 }: AppProps) {
   let momd = moment()
   let today = new Date().toISOString().substr(0, 10)
@@ -45,7 +49,8 @@ function App({
 
   useEffect(() => {
     fetchPhotoObject(curDate)
-  }, [fetchPhotoObject, curDate])
+    getFavsFromDb()
+  }, [fetchPhotoObject, curDate, getFavsFromDb])
 
   const dateSetup = (val: string, val2: Date) => {
     setCurDate(val)
@@ -59,6 +64,7 @@ function App({
     explanation: photo.explanation,
     url: photo.url,
     title: photo.title,
+    media_type: photo.media_type,
   }
 
   const handleChange = (e: any) => {
@@ -79,43 +85,59 @@ function App({
 
   return (
     <AppContainer>
-      <Header title={objToRender.title} />
-      <Frame
-        setDisplayFav={setDisplayFav}
-        change={change}
-        imgurl={objToRender.url}
-      />
-      {displayFav ? (
-        <button onClick={() => handleDelete(favToDisplay[0].date)}>
-          Delete Fav
-        </button>
-      ) : null}
-      <ButtonContainer>
-        <Button onClick={() => addFavObject(favConstruct)}>
-          Set Favourite
-        </Button>
-        {favs.length === 0 ? null : (
-          <label>
-            {' '}
-            Favorites:
-            <select onChange={handleChange} style={{ marginLeft: '10px' }}>
-              <option selected>Select</option>
-              {favs.map((fav: FavObject) => (
-                <option key={fav.date} value={fav.date}>
-                  {fav.title}
-                </option>
-              ))}
-            </select>
-          </label>
-        )}
-        <DatePicker
-          date={curDate}
-          setDate={dateSetup}
-          today={today}
-          setDisplayFav={setDisplayFav}
-        />
-      </ButtonContainer>
-      <Content explanation={objToRender.explanation} />
+      {objToRender ? (
+        objToRender.url !== '' ? (
+          <>
+            <Header title={objToRender.title} />
+            <Frame
+              mediaType={objToRender.media_type}
+              setDisplayFav={setDisplayFav}
+              change={change}
+              imgurl={objToRender.url}
+            />
+            {displayFav ? (
+              <button onClick={() => handleDelete(favToDisplay[0].date)}>
+                Delete Fav
+              </button>
+            ) : null}
+            <ButtonContainer>
+              <Button onClick={() => addFavObject(favConstruct)}>
+                Set Favourite
+              </Button>
+              {favs.length === 0 ? null : (
+                <label>
+                  {' '}
+                  Favorites:
+                  <select
+                    onChange={handleChange}
+                    style={{ marginLeft: '10px' }}
+                  >
+                    <option selected>Select</option>
+                    {favs.map((fav: FavObject) => (
+                      <option key={fav.date} value={fav.date}>
+                        {fav.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              )}
+              <DatePicker
+                date={curDate}
+                setDate={dateSetup}
+                today={today}
+                setDisplayFav={setDisplayFav}
+              />
+            </ButtonContainer>
+            <Content explanation={objToRender.explanation} />
+          </>
+        ) : (
+          <div>
+            <h1>Loading...</h1>
+          </div>
+        )
+      ) : (
+        <div>Reload</div>
+      )}
     </AppContainer>
   )
 }
@@ -128,4 +150,5 @@ export default connect(mapStateToProps, {
   fetchPhotoObject,
   addFavObject,
   deleteFav,
+  getFavsFromDb,
 })(App)

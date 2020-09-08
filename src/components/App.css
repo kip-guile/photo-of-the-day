@@ -1,0 +1,7 @@
+html,
+body {
+  background-color: #292d3e;
+  font-family: 'Crimson Text, serif';
+  display: flex;
+  justify-content: space-around;
+}

@@ -23,6 +23,7 @@ export const HeaderContainer = styled.div`
 
 export const HeaderFont = styled.h1`
   font-size: 2rem;
+  color: #ffa7c4;
 `
 
 export const FrameContainer = styled.div`
@@ -36,10 +37,19 @@ export const FrameContainer = styled.div`
 
 export const InnerFrameContainer = styled.div`
   display: flex;
-  height: 100%;
+  height: 60rem;
   width: 50%;
   padding: 2rem;
   justify-content: center;
+`
+
+export const FrameSkeleton = styled.div`
+  display: flex;
+  height: 40rem;
+  width: 50%;
+  padding: 2rem;
+  justify-content: center;
+  display: flex;
 `
 
 export const Image = styled.img`
@@ -52,7 +62,7 @@ export const Image = styled.img`
 export const ContentContainer = styled.div`
   display: flex;
   minimum-height: 5rem;
-  width: 80%;
+  width: 50%;
   justify-content: center;
 `
 
@@ -67,6 +77,7 @@ export const ButtonContainer = styled.div`
 export const Button = styled.button`
   border: none;
   cursor: pointer;
-  height: 1.5rem;
-  border-radius: 5px;
+  height: 2rem;
+  border-radius: 3px;
+  background-color: gray;
 `

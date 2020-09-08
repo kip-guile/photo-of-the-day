@@ -4,15 +4,17 @@ import {
   Image,
   InnerFrameContainer,
   Button,
+  FrameSkeleton,
 } from '../styles/styles'
 
 interface FrameProps {
   imgurl: string
   change(by: number): any
   setDisplayFav(val: boolean): any
+  mediaType: string
 }
 
-const Frame = ({ imgurl, change, setDisplayFav }: FrameProps) => {
+const Frame = ({ imgurl, change, setDisplayFav, mediaType }: FrameProps) => {
   const handleClick = (val: number) => {
     change(val)
     setDisplayFav(false)
@@ -20,9 +22,15 @@ const Frame = ({ imgurl, change, setDisplayFav }: FrameProps) => {
   return (
     <FrameContainer>
       <Button onClick={() => handleClick(-1)}>prev day</Button>
-      <InnerFrameContainer>
-        <Image src={imgurl} alt='photo-of-the-day' />
-      </InnerFrameContainer>
+      {mediaType === 'video' ? (
+        <FrameSkeleton>
+          <h1>No img available</h1>
+        </FrameSkeleton>
+      ) : (
+        <InnerFrameContainer>
+          <Image src={imgurl} alt='photo-of-the-day' />
+        </InnerFrameContainer>
+      )}
       <Button onClick={() => handleClick(1)}>next day</Button>
     </FrameContainer>
   )
