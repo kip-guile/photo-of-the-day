@@ -7,7 +7,7 @@ const key = process.env.REACT_APP_NASA_API
 export interface FavObject {
   date: string
   explanation: string
-  hdurl: string
+  url: string
   title: string
 }
 

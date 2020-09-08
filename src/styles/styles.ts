@@ -60,7 +60,7 @@ export const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   minimum-height: 2rem;
-  width: 30%;
+  width: 50%;
   padding: 1.5rem;
 `
 
