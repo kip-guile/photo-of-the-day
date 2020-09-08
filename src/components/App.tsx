@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import { fetchPhotoObject, PhotoObject } from '../actions'
+import {
+  fetchPhotoObject,
+  PhotoObject,
+  addFavObject,
+  FavObject,
+} from '../actions'
 import { StoreState } from '../reducers'
 import { DatePicker } from './DatePicker'
 import Frame from './Frame'
@@ -12,9 +17,10 @@ import { AppContainer, ButtonContainer } from '../styles/styles'
 interface AppProps {
   photo: PhotoObject
   fetchPhotoObject(date: string): any
+  addFavObject(fav: FavObject): any
 }
 
-function App({ photo, fetchPhotoObject }: AppProps) {
+function App({ photo, fetchPhotoObject, addFavObject }: AppProps) {
   let momd = moment()
   let today = new Date().toISOString().substr(0, 10)
   const [curDateObj, setCurDateObj] = useState(momd)
@@ -38,12 +44,19 @@ function App({ photo, fetchPhotoObject }: AppProps) {
     setCurDateObj(momentObj)
   }
 
+  const favConstruct = {
+    date: photo.date,
+    explanation: photo.explanation,
+    imgurl: photo.hdurl,
+    title: photo.title,
+  }
+
   return (
     <AppContainer>
       <Header title={photo.title} />
       <Frame change={change} imgurl={photo.hdurl} />
       <ButtonContainer>
-        <button>Fav</button>
+        <button onClick={() => addFavObject(favConstruct)}>Fav</button>
         <DatePicker date={curDate} setDate={dateSetup} today={today} />
       </ButtonContainer>
       <Content explanation={photo.explanation} />
@@ -55,4 +68,4 @@ const mapStateToProps = ({ photo }: StoreState) => {
   return { photo }
 }
 
-export default connect(mapStateToProps, { fetchPhotoObject })(App)
+export default connect(mapStateToProps, { fetchPhotoObject, addFavObject })(App)

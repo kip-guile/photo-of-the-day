@@ -4,6 +4,13 @@ import { ActionTypes } from './types'
 
 const key = process.env.REACT_APP_NASA_API
 
+export interface FavObject {
+  date: string
+  explanation: string
+  imgurl: string
+  title: string
+}
+
 export interface PhotoObject {
   copyright: string
   date: string
@@ -20,6 +27,11 @@ export interface fetchPhotoAction {
   payload: PhotoObject
 }
 
+export interface addFavAction {
+  type: ActionTypes.addFav
+  payload: FavObject
+}
+
 export const fetchPhotoObject = (date: string) => {
   return async (dispatch: Dispatch) => {
     const response = await axios.get<PhotoObject>(
@@ -29,5 +41,12 @@ export const fetchPhotoObject = (date: string) => {
       type: ActionTypes.fetchPhoto,
       payload: response.data,
     })
+  }
+}
+
+export const addFavObject = (fav: FavObject) => {
+  return {
+    type: ActionTypes.addFav,
+    payload: fav,
   }
 }
