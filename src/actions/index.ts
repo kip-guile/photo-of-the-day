@@ -2,7 +2,9 @@ import axios from 'axios'
 import { Dispatch } from 'redux'
 import { ActionTypes } from './types'
 
-interface PhotoObject {
+const key = process.env.REACT_APP_NASA_API
+
+export interface PhotoObject {
   copyright: string
   date: string
   explanation: string
@@ -13,12 +15,17 @@ interface PhotoObject {
   url: string
 }
 
-export const fetchPhotoObject = () => {
+export interface fetchPhotoAction {
+  type: ActionTypes.fetchPhoto
+  payload: PhotoObject
+}
+
+export const fetchPhotoObject = (date: string) => {
   return async (dispatch: Dispatch) => {
-    const response = await axios.get<PhotoObject[]>(
-      `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`
+    const response = await axios.get<PhotoObject>(
+      `https://api.nasa.gov/planetary/apod?api_key=${key}&date=${date}`
     )
-    dispatch({
+    dispatch<fetchPhotoAction>({
       type: ActionTypes.fetchPhoto,
       payload: response.data,
     })

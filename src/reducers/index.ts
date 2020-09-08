@@ -1,5 +1,11 @@
 import { combineReducers } from 'redux'
+import { photoReducer } from './photoReducer'
+import { PhotoObject } from '../actions'
 
-export const rootReducer = combineReducers({
-  counter: () => 1,
+export interface StoreState {
+  photo: PhotoObject
+}
+
+export const rootReducer = combineReducers<StoreState>({
+  photo: photoReducer,
 })
