@@ -18,7 +18,7 @@ export const HeaderContainer = styled.div`
   justify-content: center;
   min-height: 3rem;
   width: 95%;
-  padding: 2rem;
+  padding: 1.5rem;
 `
 
 export const HeaderFont = styled.h1`
@@ -53,4 +53,12 @@ export const ContentContainer = styled.div`
   minimum-height: 5rem;
   width: 80%;
   justify-content: center;
+`
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  minimum-height: 2rem;
+  width: 30%;
+  padding: 1.5rem;
 `
