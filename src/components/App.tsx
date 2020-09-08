@@ -12,22 +12,24 @@ import { DatePicker } from './DatePicker'
 import Frame from './Frame'
 import Content from './Content'
 import Header from './Header'
-import { AppContainer, ButtonContainer } from '../styles/styles'
+import { AppContainer, ButtonContainer, Button } from '../styles/styles'
 
 interface AppProps {
   photo: PhotoObject
+  favs: FavObject[]
   fetchPhotoObject(date: string): any
   addFavObject(fav: FavObject): any
 }
 
-function App({ photo, fetchPhotoObject, addFavObject }: AppProps) {
+function App({ photo, favs, fetchPhotoObject, addFavObject }: AppProps) {
   let momd = moment()
   let today = new Date().toISOString().substr(0, 10)
   const [curDateObj, setCurDateObj] = useState(momd)
   const [curDate, setCurDate] = useState(today)
+  const [favPhotoDate, setFavPhotoDate] = useState({})
+  const [displayFav, setDisplayFav] = useState(false)
 
   const change = (diff: number) => {
-    console.log(curDate)
     let temp = curDateObj.add(diff, 'days')
     setCurDateObj(temp)
     setCurDate(curDateObj.format().substr(0, 10))
@@ -47,25 +49,54 @@ function App({ photo, fetchPhotoObject, addFavObject }: AppProps) {
   const favConstruct = {
     date: photo.date,
     explanation: photo.explanation,
-    imgurl: photo.hdurl,
+    hdurl: photo.hdurl,
     title: photo.title,
   }
 
+  const handleChange = (e: any) => {
+    let { value } = e.target
+    setFavPhotoDate(value)
+    setDisplayFav(true)
+  }
+  const favToDisplay = favs.filter(
+    (fav: FavObject) => fav.date === favPhotoDate
+  )
+
+  let objToRender = displayFav ? favToDisplay[0] : photo
+
   return (
     <AppContainer>
-      <Header title={photo.title} />
-      <Frame change={change} imgurl={photo.hdurl} />
+      <Header title={objToRender.title} />
+      <Frame
+        setDisplayFav={setDisplayFav}
+        change={change}
+        imgurl={objToRender.hdurl}
+      />
       <ButtonContainer>
-        <button onClick={() => addFavObject(favConstruct)}>Fav</button>
-        <DatePicker date={curDate} setDate={dateSetup} today={today} />
+        <Button onClick={() => addFavObject(favConstruct)}>Fav</Button>
+        {favs.length === 0 ? null : (
+          <select onChange={handleChange} style={{ marginLeft: '10px' }}>
+            {favs.map((fav: FavObject) => (
+              <option key={fav.date} value={fav.date}>
+                {fav.title}
+              </option>
+            ))}
+          </select>
+        )}
+        <DatePicker
+          date={curDate}
+          setDate={dateSetup}
+          today={today}
+          setDisplayFav={setDisplayFav}
+        />
       </ButtonContainer>
-      <Content explanation={photo.explanation} />
+      <Content explanation={objToRender.explanation} />
     </AppContainer>
   )
 }
 
-const mapStateToProps = ({ photo }: StoreState) => {
-  return { photo }
+const mapStateToProps = ({ photo, favs }: StoreState) => {
+  return { photo, favs }
 }
 
 export default connect(mapStateToProps, { fetchPhotoObject, addFavObject })(App)

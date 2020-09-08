@@ -1,19 +1,29 @@
 import React from 'react'
-import { FrameContainer, Image, InnerFrameContainer } from '../styles/styles'
+import {
+  FrameContainer,
+  Image,
+  InnerFrameContainer,
+  Button,
+} from '../styles/styles'
 
 interface FrameProps {
   imgurl: string
   change(by: number): any
+  setDisplayFav(val: boolean): any
 }
 
-const Frame = ({ imgurl, change }: FrameProps) => {
+const Frame = ({ imgurl, change, setDisplayFav }: FrameProps) => {
+  const handleClick = (val: number) => {
+    change(val)
+    setDisplayFav(false)
+  }
   return (
     <FrameContainer>
-      <button onClick={() => change(-1)}>prev</button>
+      <Button onClick={() => handleClick(-1)}>prev day</Button>
       <InnerFrameContainer>
         <Image src={imgurl} alt='photo-of-the-day' />
       </InnerFrameContainer>
-      <button onClick={() => change(1)}>next</button>
+      <Button onClick={() => handleClick(1)}>next day</Button>
     </FrameContainer>
   )
 }

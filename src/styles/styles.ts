@@ -31,6 +31,7 @@ export const FrameContainer = styled.div`
   width: 95%;
   padding: 2rem;
   justify-content: center;
+  align-items: center;
 `
 
 export const InnerFrameContainer = styled.div`
@@ -61,4 +62,11 @@ export const ButtonContainer = styled.div`
   minimum-height: 2rem;
   width: 30%;
   padding: 1.5rem;
+`
+
+export const Button = styled.button`
+  border: none;
+  cursor: pointer;
+  height: 1.5rem;
+  border-radius: 5px;
 `
