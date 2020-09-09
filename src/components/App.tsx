@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Spin } from 'antd'
 import { CompressOutlined } from '@ant-design/icons'
-import './App.css'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import './App.css'
 import {
   fetchPhotoObject,
   PhotoObject,
@@ -22,6 +22,7 @@ import Content from './Content'
 import Header from './Header'
 import { AppContainer, GrayButtonContainer } from '../styles/styles'
 
+// Describe prop structure for App component
 interface AppProps {
   photo: PhotoObject
   favs: FavObject[]
@@ -45,10 +46,15 @@ function App({
   prevAndNextPhotos,
   previews,
 }: AppProps) {
+  //Get persisted photo from localStorage and then parse to JSON
   const localphoto = localStorage.getItem('photo')
   const persistedPhoto = localphoto ? JSON.parse(localphoto) : null
+
+  //moment.js initializations
   let momd = moment()
   let today = new Date().toISOString().substr(0, 10)
+
+  // local slices of state and setters
   const [curDateObj, setCurDateObj] = useState(momd)
   const [curDate, setCurDate] = useState(today)
   const [favPhotoDate, setFavPhotoDate] = useState({})
@@ -57,28 +63,35 @@ function App({
   // variable to disable next button
   const disableNext = curDate === today
 
+  // helper for incrementing and decrementing date with side effects
   const change = (diff: number) => {
     let temp = curDateObj.add(diff, 'days')
     setCurDateObj(temp)
     setCurDate(curDateObj.format().substr(0, 10))
   }
 
+  // increment and decrement date without side effects
   const handlePreview = (diff: number) => {
     let temp = curDateObj.add(diff, 'days')
     return temp.format().substr(0, 10)
   }
 
   useEffect(() => {
+    //fetch photo object from NASA API
     fetchPhotoObject(curDate)
+    //fetch favorite photos from noSQL database
     getFavsFromDb()
+    // fetch previous and next photos from NASA API
     prevAndNextPhotos(handlePreview(-1), handlePreview(disableNext ? 1 : 2))
   }, [fetchPhotoObject, curDate, getFavsFromDb])
 
+  // control photochsnges with date picker
   const dateSetup = (val: any, val2: string) => {
     setCurDate(val2)
     setCurDateObj(val)
   }
 
+  // prepare favObject to be saved to noSQL database
   const favConstruct = {
     date: photo.date,
     explanation: photo.explanation,
@@ -87,16 +100,19 @@ function App({
     media_type: photo.media_type,
   }
 
+  // get favorite image to display by filtering through favorites in the reducer, using date
   const favToDisplay = favs.filter(
     (fav: FavObject) => fav.date === favPhotoDate
   )
 
+  // logic to determine what photo object gets rendered.
   let objToRender = displayFav
     ? favToDisplay[0]
     : photo.url
     ? photo
     : persistedPhoto
 
+  // helper to handle deleting a favorited photo
   const handleDelete = (date: string) => {
     setDisplayFav(false)
     deleteFav(date)
