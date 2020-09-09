@@ -7,4 +7,5 @@ export enum ActionTypes {
   addNasaError,
   addGetError,
   addError,
+  addPreview,
 }

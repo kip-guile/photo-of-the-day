@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { message } from 'antd'
 import { Dispatch } from 'redux'
 import { ActionTypes } from './types'
 
@@ -19,6 +20,11 @@ export interface FavObject {
   title: string
   media_type: string
   __v?: number
+}
+
+export interface PreviewObj {
+  previous: string
+  next: string
 }
 
 export interface PhotoObject {
@@ -52,6 +58,11 @@ export interface getFavsAction {
   payload: FavObject[]
 }
 
+export interface addPrevAndNext {
+  type: ActionTypes.addPreview
+  payload: PreviewObj
+}
+
 export interface addErrorAction {
   type:
     | ActionTypes.addGetError
@@ -63,6 +74,14 @@ export interface addErrorAction {
     | ActionTypes.fetchPhoto
     | ActionTypes.getFavs
   payload: string
+}
+
+const success = (msg: string) => {
+  message.success(msg, 3)
+}
+
+const error = (msg: string) => {
+  message.error(msg, 5)
 }
 
 export const fetchPhotoObject = (date: string) => {
@@ -77,6 +96,7 @@ export const fetchPhotoObject = (date: string) => {
         payload: response.data,
       })
     } catch (err) {
+      error(err.message)
       dispatch<addErrorAction>({
         type: ActionTypes.addNasaError,
         payload: err.message,
@@ -96,6 +116,7 @@ export const getFavsFromDb = () => {
         payload: response.data,
       })
     } catch (err) {
+      error(err.message)
       dispatch<addErrorAction>({
         type: ActionTypes.addGetError,
         payload: err.message,
@@ -115,7 +136,9 @@ export const addFavObject = (fav: FavObject) => {
         type: ActionTypes.addFav,
         payload: response.data,
       })
+      success('saved')
     } catch (err) {
+      error(err.message)
       dispatch<addErrorAction>({
         type: ActionTypes.addError,
         payload: err.message,
@@ -134,11 +157,35 @@ export const deleteFav = (date: string) => {
         type: ActionTypes.deleteFav,
         payload: response.data,
       })
+      success('deleted')
     } catch (err) {
+      error(err.message)
       dispatch<addErrorAction>({
         type: ActionTypes.addDeleteError,
         payload: err.message,
       })
+    }
+  }
+}
+
+export const prevAndNextPhotos = (prev: string, next: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      const prevPromise = await axios.get(
+        `https://api.nasa.gov/planetary/apod?api_key=${key}&hd=false&date=${prev}`
+      )
+      const nextPromise = await axios.get(
+        `https://api.nasa.gov/planetary/apod?api_key=${key}&hd=false&date=${next}`
+      )
+      dispatch<addPrevAndNext>({
+        type: ActionTypes.addPreview,
+        payload: {
+          previous: prevPromise.data.url,
+          next: nextPromise.data.url,
+        },
+      })
+    } catch (err) {
+      error(err.message)
     }
   }
 }

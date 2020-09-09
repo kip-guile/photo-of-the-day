@@ -43,8 +43,8 @@ const FavSelect = ({
             <Option selected value={favs[0].date}>
               select
             </Option>
-            {favs.map((fav: FavObject) => (
-              <Option key={fav.date} value={fav.date}>
+            {favs.map((fav: FavObject, i: number) => (
+              <Option key={i} value={fav.date}>
                 {fav.title}
               </Option>
             ))}
@@ -54,7 +54,7 @@ const FavSelect = ({
       <div style={{ marginLeft: '10px' }}>
         {displayFav ? (
           <Popconfirm
-            title='Are you sure delete this task?'
+            title='This photo will be deleted'
             onConfirm={() => handleDelete(favToDisplay[0].date)}
             onCancel={cancel}
             okText='Yes'

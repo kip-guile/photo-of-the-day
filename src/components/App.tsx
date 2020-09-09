@@ -11,6 +11,8 @@ import {
   deleteFav,
   getFavsFromDb,
   ErrorObject,
+  prevAndNextPhotos,
+  PreviewObj,
 } from '../actions'
 import { StoreState } from '../reducers'
 import { DatePickerComp } from './DatePicker'
@@ -28,6 +30,8 @@ interface AppProps {
   addFavObject(fav: FavObject): any
   deleteFav(date: string): any
   getFavsFromDb(): any
+  prevAndNextPhotos(prev: string, next: string): any
+  previews: PreviewObj
 }
 
 function App({
@@ -38,6 +42,8 @@ function App({
   addFavObject,
   deleteFav,
   getFavsFromDb,
+  prevAndNextPhotos,
+  previews,
 }: AppProps) {
   const localphoto = localStorage.getItem('photo')
   const persistedPhoto = localphoto ? JSON.parse(localphoto) : null
@@ -48,10 +54,8 @@ function App({
   const [favPhotoDate, setFavPhotoDate] = useState({})
   const [displayFav, setDisplayFav] = useState(false)
 
-  // variable to disable next GrayButton
+  // variable to disable next button
   const disableNext = curDate === today
-
-  const errorArray = Object.values(errors)
 
   const change = (diff: number) => {
     let temp = curDateObj.add(diff, 'days')
@@ -59,15 +63,19 @@ function App({
     setCurDate(curDateObj.format().substr(0, 10))
   }
 
+  const handlePreview = (diff: number) => {
+    let temp = curDateObj.add(diff, 'days')
+    return temp.format().substr(0, 10)
+  }
+
   useEffect(() => {
     fetchPhotoObject(curDate)
     getFavsFromDb()
+    prevAndNextPhotos(handlePreview(-1), handlePreview(disableNext ? 1 : 2))
   }, [fetchPhotoObject, curDate, getFavsFromDb])
 
   const dateSetup = (val: any, val2: string) => {
     setCurDate(val2)
-    // let dateObj = new Date(val2)
-    // let momentObj = moment(dateObj)
     setCurDateObj(val)
   }
 
@@ -96,15 +104,6 @@ function App({
 
   return (
     <AppContainer>
-      <div>
-        {errorArray.map((err, i) =>
-          err ? (
-            <p style={{ color: 'red' }} key={i}>
-              {err}
-            </p>
-          ) : null
-        )}
-      </div>
       {objToRender ? (
         objToRender.url !== '' ? (
           <>
@@ -123,6 +122,8 @@ function App({
               setDisplayFav={setDisplayFav}
               change={change}
               imgurl={objToRender.url}
+              title={objToRender.title}
+              previews={previews}
             />
             <p>click image to expand</p>
             <GrayButtonContainer>
@@ -150,8 +151,8 @@ function App({
   )
 }
 
-const mapStateToProps = ({ photo, favs, errors }: StoreState) => {
-  return { photo, favs, errors }
+const mapStateToProps = ({ photo, favs, errors, previews }: StoreState) => {
+  return { photo, favs, errors, previews }
 }
 
 export default connect(mapStateToProps, {
@@ -159,4 +160,5 @@ export default connect(mapStateToProps, {
   addFavObject,
   deleteFav,
   getFavsFromDb,
+  prevAndNextPhotos,
 })(App)

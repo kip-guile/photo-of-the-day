@@ -49,7 +49,7 @@ export const FrameSkeleton = styled.div`
   height: 30rem;
   width: 50%;
   padding: 2rem;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   display: flex;
 `
