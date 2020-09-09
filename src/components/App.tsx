@@ -117,7 +117,6 @@ function App({
     setDisplayFav(false)
     deleteFav(date)
   }
-
   return (
     <AppContainer>
       {objToRender ? (
