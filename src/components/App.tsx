@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Button } from 'antd'
 import './App.css'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -12,12 +13,12 @@ import {
   ErrorObject,
 } from '../actions'
 import { StoreState } from '../reducers'
-import { DatePicker } from './DatePicker'
+import { DatePickerComp } from './DatePicker'
 import FavSelect from './FavSelect'
 import Frame from './Frame'
 import Content from './Content'
 import Header from './Header'
-import { AppContainer, ButtonContainer, Button } from '../styles/styles'
+import { AppContainer, GrayButtonContainer } from '../styles/styles'
 
 interface AppProps {
   photo: PhotoObject
@@ -47,7 +48,7 @@ function App({
   const [favPhotoDate, setFavPhotoDate] = useState({})
   const [displayFav, setDisplayFav] = useState(false)
 
-  // variable to disable next button
+  // variable to disable next GrayButton
   const disableNext = curDate === today
 
   const errorArray = Object.values(errors)
@@ -63,11 +64,11 @@ function App({
     getFavsFromDb()
   }, [fetchPhotoObject, curDate, getFavsFromDb])
 
-  const dateSetup = (val: string, val2: Date) => {
-    setCurDate(val)
-    let dateObj = new Date(val2)
-    let momentObj = moment(dateObj)
-    setCurDateObj(momentObj)
+  const dateSetup = (val: any, val2: string) => {
+    setCurDate(val2)
+    // let dateObj = new Date(val2)
+    // let momentObj = moment(dateObj)
+    setCurDateObj(val)
   }
 
   const favConstruct = {
@@ -123,17 +124,18 @@ function App({
               change={change}
               imgurl={objToRender.url}
             />
-            <ButtonContainer>
-              <Button onClick={() => addFavObject(favConstruct)}>
+            <p>click image to expand</p>
+            <GrayButtonContainer>
+              <Button ghost onClick={() => addFavObject(favConstruct)}>
                 Set Favourite
               </Button>
-              <DatePicker
+              <DatePickerComp
                 date={curDate}
                 setDate={dateSetup}
                 today={today}
                 setDisplayFav={setDisplayFav}
               />
-            </ButtonContainer>
+            </GrayButtonContainer>
             <Content explanation={objToRender.explanation} />
           </>
         ) : (

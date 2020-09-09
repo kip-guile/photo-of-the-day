@@ -45,14 +45,16 @@ export const InnerFrameContainer = styled.div`
 
 export const FrameSkeleton = styled.div`
   display: flex;
-  height: 40rem;
+  flex-direction: column;
+  height: 30rem;
   width: 50%;
   padding: 2rem;
   justify-content: center;
+  align-items: center;
   display: flex;
 `
 
-export const Image = styled.img`
+export const Image2 = styled.img`
   width: 100%;
   min-height: 100%;
   object-fit: cover;
@@ -66,7 +68,7 @@ export const ContentContainer = styled.div`
   justify-content: center;
 `
 
-export const ButtonContainer = styled.div`
+export const GrayButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   minimum-height: 2rem;
@@ -74,7 +76,7 @@ export const ButtonContainer = styled.div`
   padding: 1.5rem;
 `
 
-export const Button = styled.button`
+export const GrayButton = styled.button`
   border: none;
   cursor: pointer;
   height: 2rem;

@@ -1,28 +1,34 @@
 import React from 'react'
+import moment from 'moment'
+import { DatePicker, Space } from 'antd'
 
 interface PickerProps {
   date: string
-  setDate(val: string, val2: Date | null): any
+  setDate(val: any, val2: any | null): any
   today: string
   setDisplayFav(val: boolean): any
 }
 
-export const DatePicker = ({
+export const DatePickerComp = ({
   date,
   setDate,
   today,
   setDisplayFav,
 }: PickerProps) => {
+  function onChange(date: any, dateString: any) {
+    setDate(date, dateString)
+  }
+  function disabledDate(current: any) {
+    // Can not select days before today and today
+    return current > moment().endOf('day')
+  }
   return (
-    <div style={{ marginLeft: '3px' }}>
-      <input
-        type='date'
-        min='2018-01-01'
-        max={today}
-        value={date}
+    <Space direction='vertical'>
+      <DatePicker
         onClick={() => setDisplayFav(false)}
-        onChange={(e) => setDate(e.target.value, e.target.valueAsDate)}
+        disabledDate={disabledDate}
+        onChange={onChange}
       />
-    </div>
+    </Space>
   )
 }

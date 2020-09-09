@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button, Favs } from '../styles/styles'
+import { Select, Button, Popconfirm, message } from 'antd'
+import { Favs } from '../styles/styles'
 import { FavObject } from '../actions'
 interface FavSelectProps {
   favs: FavObject[]
@@ -10,6 +11,8 @@ interface FavSelectProps {
   favToDisplay: FavObject[]
 }
 
+const { Option } = Select
+
 const FavSelect = ({
   favs,
   setFavPhotoDate,
@@ -18,10 +21,13 @@ const FavSelect = ({
   handleDelete,
   favToDisplay,
 }: FavSelectProps) => {
-  const handleChange = (e: any) => {
-    let { value } = e.target
+  const handleChange = (value: string) => {
     setFavPhotoDate(value)
     setDisplayFav(true)
+  }
+  function cancel(e: any) {
+    console.log(e)
+    message.error('Click on No')
   }
 
   return (
@@ -30,23 +36,32 @@ const FavSelect = ({
         <label>
           {' '}
           Favorites:
-          <select onChange={handleChange} style={{ marginLeft: '10px' }}>
-            <option selected value={favs[0].date}>
-              Select
-            </option>
+          <Select
+            style={{ width: 300, marginLeft: '15px' }}
+            onChange={handleChange}
+          >
+            <Option selected value={favs[0].date}>
+              select
+            </Option>
             {favs.map((fav: FavObject) => (
-              <option key={fav.date} value={fav.date}>
+              <Option key={fav.date} value={fav.date}>
                 {fav.title}
-              </option>
+              </Option>
             ))}
-          </select>
+          </Select>
         </label>
       )}
       <div style={{ marginLeft: '10px' }}>
         {displayFav ? (
-          <Button onClick={() => handleDelete(favToDisplay[0].date)}>
-            Delete
-          </Button>
+          <Popconfirm
+            title='Are you sure delete this task?'
+            onConfirm={() => handleDelete(favToDisplay[0].date)}
+            onCancel={cancel}
+            okText='Yes'
+            cancelText='No'
+          >
+            <Button>Delete</Button>
+          </Popconfirm>
         ) : null}
       </div>
     </Favs>
