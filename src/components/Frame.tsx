@@ -6,8 +6,9 @@ import {
   InnerFrameContainer,
   FrameSkeleton,
 } from '../styles/styles'
-import { PreviewObj, PhotoReducerObject } from '../actions'
+import { PreviewObj } from '../actions'
 
+// Describe props for Frame component
 interface FrameProps {
   imgurl: string
   change(by: number): any
@@ -29,16 +30,31 @@ const Frame = ({
   previews,
   loading,
 }: FrameProps) => {
+  // controller to handle (next/previous) button clicks.
   const handleClick = (val: number) => {
     change(val)
     setDisplayFav(false)
   }
+
+  // helper to get last three characters of url. Used to check if url is a photo or video.
+  const getLast3 = (url: string) => {
+    if (url.substr(url.length - 3) === 'jpg') return true
+    return false
+  }
+
   return (
     <FrameContainer>
       <div style={{ marginRight: '15px' }}>
-        <Image width={100} src={previews.previous} alt='photo-of-the-day' />
+        {getLast3(previews.previous) ? (
+          <Image width={100} src={previews.previous} alt='photo-of-the-day' />
+        ) : (
+          <iframe
+            style={{ width: '100px' }}
+            src={previews.previous}
+            title='previous'
+          />
+        )}
       </div>
-
       <Button
         loading={loading}
         type='primary'
@@ -62,7 +78,11 @@ const Frame = ({
         onClick={() => handleClick(1)}
       ></Button>
       <div style={{ marginLeft: '15px' }}>
-        <Image width={100} src={previews.next} alt='photo-of-the-day' />
+        {getLast3(previews.next) ? (
+          <Image width={100} src={previews.next} alt='photo-of-the-day' />
+        ) : (
+          <iframe style={{ width: '100px' }} src={previews.next} title='next' />
+        )}
       </div>
     </FrameContainer>
   )

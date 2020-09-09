@@ -54,13 +54,6 @@ export const FrameSkeleton = styled.div`
   display: flex;
 `
 
-export const Image2 = styled.img`
-  width: 100%;
-  min-height: 100%;
-  object-fit: cover;
-  object-position: center;
-`
-
 export const ContentContainer = styled.div`
   display: flex;
   minimum-height: 5rem;
@@ -74,14 +67,6 @@ export const GrayButtonContainer = styled.div`
   minimum-height: 2rem;
   width: 50%;
   padding: 1.5rem;
-`
-
-export const GrayButton = styled.button`
-  border: none;
-  cursor: pointer;
-  height: 2rem;
-  border-radius: 3px;
-  background-color: gray;
 `
 
 export const Favs = styled.div`

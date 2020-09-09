@@ -11,7 +11,6 @@ import {
   FavObject,
   deleteFav,
   getFavsFromDb,
-  ErrorObject,
   prevAndNextPhotos,
   PreviewObj,
 } from '../actions'
@@ -127,7 +126,7 @@ function App({
               previews={previews}
               loading={photo.loading}
             />
-            <p>click image to expand</p>
+            <p>Click images to expand</p>
             <GrayButtonContainer>
               <Button ghost onClick={() => addFavObject(favConstruct)}>
                 Set Favourite

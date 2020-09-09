@@ -4,6 +4,7 @@ import { Collapse } from 'antd'
 
 const { Panel } = Collapse
 
+// Describe Content prop structure
 interface ContentProps {
   explanation: string
 }

@@ -7,8 +7,9 @@ import thunk from 'redux-thunk'
 import App from './components/App'
 import { rootReducer } from './reducers'
 
-const store = createStore(
+export const store = createStore(
   rootReducer,
+  {},
   compose(applyMiddleware(thunk), composeWithDevTools())
 )
 

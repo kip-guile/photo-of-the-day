@@ -1,7 +1,9 @@
 import React from 'react'
-import { Select, Button, Popconfirm, message } from 'antd'
+import { Select, Button, Popconfirm } from 'antd'
 import { Favs } from '../styles/styles'
 import { FavObject } from '../actions'
+
+// Describe structure of FavSelect props
 interface FavSelectProps {
   favs: FavObject[]
   setFavPhotoDate(val: any): any
@@ -21,13 +23,10 @@ const FavSelect = ({
   handleDelete,
   favToDisplay,
 }: FavSelectProps) => {
+  // handles selection and display of favorite photos from dropdown
   const handleChange = (value: string) => {
     setFavPhotoDate(value)
     setDisplayFav(true)
-  }
-  function cancel(e: any) {
-    console.log(e)
-    message.error('Click on No')
   }
 
   return (
@@ -56,7 +55,6 @@ const FavSelect = ({
           <Popconfirm
             title='This photo will be deleted'
             onConfirm={() => handleDelete(favToDisplay[0].date)}
-            onCancel={cancel}
             okText='Yes'
             cancelText='No'
           >

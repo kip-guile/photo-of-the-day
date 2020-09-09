@@ -1,13 +1,12 @@
 export enum ActionTypes {
+  // NASA API actions
   fetchPhoto,
+  addPreview,
+  // noSQL DB actions
   addFav,
   deleteFav,
   getFavs,
-  addDeleteError,
-  addNasaError,
-  addGetError,
-  addError,
-  addPreview,
+  // UI control actions
   isLoading,
   failedRequest,
 }
