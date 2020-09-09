@@ -6,7 +6,7 @@ import {
   InnerFrameContainer,
   FrameSkeleton,
 } from '../styles/styles'
-import { PreviewObj } from '../actions'
+import { PreviewObj, PhotoReducerObject } from '../actions'
 
 interface FrameProps {
   imgurl: string
@@ -16,6 +16,7 @@ interface FrameProps {
   disableNext: boolean
   title: string
   previews: PreviewObj
+  loading: any
 }
 
 const Frame = ({
@@ -26,6 +27,7 @@ const Frame = ({
   disableNext,
   title,
   previews,
+  loading,
 }: FrameProps) => {
   const handleClick = (val: number) => {
     change(val)
@@ -38,6 +40,7 @@ const Frame = ({
       </div>
 
       <Button
+        loading={loading}
         type='primary'
         icon={<StepBackwardOutlined />}
         onClick={() => handleClick(-1)}
@@ -52,6 +55,7 @@ const Frame = ({
         </InnerFrameContainer>
       )}
       <Button
+        loading={loading}
         type='primary'
         icon={<StepForwardOutlined />}
         disabled={disableNext}

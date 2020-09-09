@@ -8,4 +8,6 @@ export enum ActionTypes {
   addGetError,
   addError,
   addPreview,
+  isLoading,
+  failedRequest,
 }

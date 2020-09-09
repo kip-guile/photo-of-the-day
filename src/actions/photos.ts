@@ -27,6 +27,18 @@ export interface PreviewObj {
   next: string
 }
 
+export interface PhotoReducerObject {
+  copyright: string
+  date: string
+  explanation: string
+  hdurl: string
+  media_type: string
+  service_version: string
+  title: string
+  url: string
+  loading: boolean
+}
+
 export interface PhotoObject {
   copyright: string
   date: string
@@ -36,6 +48,7 @@ export interface PhotoObject {
   service_version: string
   title: string
   url: string
+  loading?: boolean
 }
 
 export interface fetchPhotoAction {
@@ -63,17 +76,12 @@ export interface addPrevAndNext {
   payload: PreviewObj
 }
 
-export interface addErrorAction {
-  type:
-    | ActionTypes.addGetError
-    | ActionTypes.addNasaError
-    | ActionTypes.addError
-    | ActionTypes.addDeleteError
-    | ActionTypes.addFav
-    | ActionTypes.deleteFav
-    | ActionTypes.fetchPhoto
-    | ActionTypes.getFavs
-  payload: string
+export interface isLoadingAction {
+  type: ActionTypes.isLoading
+}
+
+export interface failedRequest {
+  type: ActionTypes.failedRequest
 }
 
 const success = (msg: string) => {
@@ -86,6 +94,9 @@ const error = (msg: string) => {
 
 export const fetchPhotoObject = (date: string) => {
   return async (dispatch: Dispatch) => {
+    dispatch<isLoadingAction>({
+      type: ActionTypes.isLoading,
+    })
     try {
       const response = await axios.get<PhotoObject>(
         `https://api.nasa.gov/planetary/apod?api_key=${key}&hd=false&date=${date}`
@@ -97,9 +108,8 @@ export const fetchPhotoObject = (date: string) => {
       })
     } catch (err) {
       error(err.message)
-      dispatch<addErrorAction>({
-        type: ActionTypes.addNasaError,
-        payload: err.message,
+      dispatch<failedRequest>({
+        type: ActionTypes.failedRequest,
       })
     }
   }
@@ -117,10 +127,6 @@ export const getFavsFromDb = () => {
       })
     } catch (err) {
       error(err.message)
-      dispatch<addErrorAction>({
-        type: ActionTypes.addGetError,
-        payload: err.message,
-      })
     }
   }
 }
@@ -139,10 +145,6 @@ export const addFavObject = (fav: FavObject) => {
       success('saved')
     } catch (err) {
       error(err.message)
-      dispatch<addErrorAction>({
-        type: ActionTypes.addError,
-        payload: err.message,
-      })
     }
   }
 }
@@ -160,10 +162,6 @@ export const deleteFav = (date: string) => {
       success('deleted')
     } catch (err) {
       error(err.message)
-      dispatch<addErrorAction>({
-        type: ActionTypes.addDeleteError,
-        payload: err.message,
-      })
     }
   }
 }

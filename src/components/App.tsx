@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'antd'
+import { Button, Spin } from 'antd'
+import { CompressOutlined } from '@ant-design/icons'
 import './App.css'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -25,7 +26,6 @@ import { AppContainer, GrayButtonContainer } from '../styles/styles'
 interface AppProps {
   photo: PhotoObject
   favs: FavObject[]
-  errors: ErrorObject
   fetchPhotoObject(date: string): any
   addFavObject(fav: FavObject): any
   deleteFav(date: string): any
@@ -34,10 +34,11 @@ interface AppProps {
   previews: PreviewObj
 }
 
+const antIcon = <CompressOutlined style={{ fontSize: 24 }} spin />
+
 function App({
   photo,
   favs,
-  errors,
   fetchPhotoObject,
   addFavObject,
   deleteFav,
@@ -124,6 +125,7 @@ function App({
               imgurl={objToRender.url}
               title={objToRender.title}
               previews={previews}
+              loading={photo.loading}
             />
             <p>click image to expand</p>
             <GrayButtonContainer>
@@ -141,18 +143,18 @@ function App({
           </>
         ) : (
           <div>
-            <p>{errors.nasaError}</p>
+            <Spin indicator={antIcon} />
           </div>
         )
       ) : (
-        <div>{errors.nasaError}</div>
+        <Spin indicator={antIcon} />
       )}
     </AppContainer>
   )
 }
 
-const mapStateToProps = ({ photo, favs, errors, previews }: StoreState) => {
-  return { photo, favs, errors, previews }
+const mapStateToProps = ({ photo, favs, previews }: StoreState) => {
+  return { photo, favs, previews }
 }
 
 export default connect(mapStateToProps, {
