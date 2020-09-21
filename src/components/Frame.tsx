@@ -75,7 +75,7 @@ const Frame = ({
         type='primary'
         icon={<StepForwardOutlined />}
         disabled={disableNext}
-        onClick={() => handleClick(1)}
+        onClick={() => handleClick(0)}
       ></Button>
       <div style={{ marginLeft: '15px' }}>
         {getLast3(previews.next) ? (
