@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Spin } from 'antd'
+import { Button, Spin, Rate } from 'antd'
 import { CompressOutlined } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -131,6 +131,11 @@ function App({
               handleDelete={handleDelete}
               favToDisplay={favToDisplay}
             />
+            {displayFav ? (
+              <div style={{ marginTop: '2rem' }}>
+                <Rate disabled defaultValue={5} />
+              </div>
+            ) : null}
             <Frame
               disableNext={disableNext}
               mediaType={objToRender.media_type}
@@ -143,7 +148,11 @@ function App({
             />
             <p>Click images to expand</p>
             <GrayButtonContainer>
-              <Button ghost onClick={() => addFavObject(favConstruct)}>
+              <Button
+                ghost
+                disabled={displayFav}
+                onClick={() => addFavObject(favConstruct)}
+              >
                 Set Favourite
               </Button>
               <DatePickerComp

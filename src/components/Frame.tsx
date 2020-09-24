@@ -44,9 +44,14 @@ const Frame = ({
 
   return (
     <FrameContainer>
-      <div style={{ marginRight: '15px' }}>
+      <div style={{ marginRight: '15px', border: '0.2rem solid gray' }}>
         {getLast3(previews.previous) ? (
-          <Image width={100} src={previews.previous} alt='photo-of-the-day' />
+          <Image
+            width={100}
+            height={100}
+            src={previews.previous}
+            alt='photo-of-the-day'
+          />
         ) : (
           <iframe
             style={{ width: '100px' }}
@@ -67,7 +72,7 @@ const Frame = ({
         </FrameSkeleton>
       ) : (
         <InnerFrameContainer>
-          <Image width={500} src={imgurl} alt='photo-of-the-day' />
+          <Image width={700} src={imgurl} alt='photo-of-the-day' />
         </InnerFrameContainer>
       )}
       <Button
@@ -77,7 +82,7 @@ const Frame = ({
         disabled={disableNext}
         onClick={() => handleClick(0)}
       ></Button>
-      <div style={{ marginLeft: '15px' }}>
+      <div style={{ marginLeft: '15px', border: '0.2rem solid gray' }}>
         {getLast3(previews.next) ? (
           <Image width={100} src={previews.next} alt='photo-of-the-day' />
         ) : (

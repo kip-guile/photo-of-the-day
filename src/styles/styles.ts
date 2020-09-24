@@ -39,17 +39,18 @@ export const InnerFrameContainer = styled.div`
   display: flex;
   height: 100%;
   width: 50%;
-  padding: 2rem;
+  margin: 2rem;
   justify-content: center;
+  border: 0.2rem solid gray;
 `
 
 export const FrameSkeleton = styled.div`
   display: flex;
   flex-direction: column;
-  height: 30rem;
+  height: 20rem;
   width: 50%;
   padding: 2rem;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   display: flex;
 `
